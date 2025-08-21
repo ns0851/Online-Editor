@@ -1,15 +1,18 @@
 package main
 
 import (
-	"fmt"
+	"Backend/internal/router"
 	"log"
 	"net/http"
-	"Backend/internal/router"
 )
 
 func main() {
-	fmt.Println("Server Running on :9090")
-	r := router.SetupRouter()
-	log.Fatal(http.ListenAndServe(":9090", r))
+	mux := router.SetupRouter() // get the router
+	log.Println("Server running on http://localhost:9090")
+	err := http.ListenAndServe(":9090", mux) // start HTTP server
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
+//pexels - PiFlGwhKIh4z30H33wXUcXSUbYJKqml3Em2jrOYGLPF6LWts51VgzVVv
