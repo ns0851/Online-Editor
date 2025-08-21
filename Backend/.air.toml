@@ -1,0 +1,12 @@
+# Project root
+root = "."
+
+# Temporary build directory
+tmp_dir = "tmp"
+
+[build]
+# Command to build your main.go
+cmd = "go build -o tmp/main.exe ./cmd/online_editor/main.go"
+bin = "tmp/main.exe"
+include_ext = ["go","tpl","tmpl","html"]
+exclude_dir = ["tmp","vendor"]
