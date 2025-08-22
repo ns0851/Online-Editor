@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"io"
-	"fmt"
 	"net/http"
 	"encoding/json"
 	"Backend/internal/services"
@@ -43,5 +42,4 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// io.WriteString(w, res)
 	// fmt.Fprintf(w, `<h1 >Image</h1><img style="width:35vw; height:70vh;" src="%s" alt="photo">`, response)
-	
 }
