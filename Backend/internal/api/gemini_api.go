@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"os"
-
 	"google.golang.org/genai"
 )
 

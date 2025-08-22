@@ -1,30 +1,47 @@
 package handlers
 
 import (
-	"fmt"
 	"io"
-	"log"
+	"fmt"
 	"net/http"
-	"Backend/internal/api"
+	"encoding/json"
+	"Backend/internal/services"
 )
 
-func GeminiHandler(w http.ResponseWriter, r *http.Request) {
+func ApiHandler(w http.ResponseWriter, r *http.Request) {
+	// Getting user request from BODY //
+	body, err := io.ReadAll(r.Body)
+    if err != nil {
+        http.Error(w, "Error reading body", http.StatusBadRequest)
+        return
+    }
+	defer r.Body.Close()
 
-	response, err := api.GetGeminiResponse("who came first egg or chicken?")
-	if err != nil {
-		log.Fatal("Error getting response from Gemini: ", err)
-	}
-	io.WriteString(w, response)
-	fmt.Println("got /gemini request")
-}
-
-func PexelsHandler(w http.ResponseWriter, r *http.Request) {
-
-	response, err := api.GetPexelsResponse("nature")
-	if err != nil {
-		log.Fatal("Error getting response from Pexels: ", err)
+	// Creating a struct to make body.text work by storing it in Text of the struct //
+	var data struct {
+    Text string `json:"text"`
 	}
 
-	fmt.Fprintf(w, `<h1 >Image</h1><img style="width:35vw; height:50vh;" src="%s" alt="photo">`, response)
-	fmt.Println("got /pexels request")
+	if err := json.Unmarshal(body, &data); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	// Getting response from Gemini //
+	respo, err := services.GetGeminiResponseService(data.Text)
+	if err != nil {
+		http.Error(w, "Error getting response from Gemini: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	io.WriteString(w, respo)
+
+	// Getting response from Pexels by passing response from Gemini to it //
+	res, err := services.GetPexelsResponseService(respo)
+	if err != nil {
+		http.Error(w, "Error getting response from Pexels: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// io.WriteString(w, res)
+	// fmt.Fprintf(w, `<h1 >Image</h1><img style="width:35vw; height:70vh;" src="%s" alt="photo">`, response)
+	
 }

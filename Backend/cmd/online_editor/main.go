@@ -2,17 +2,21 @@ package main
 
 import (
 	"Backend/internal/router"
-	"log"
+	"fmt"
 	"net/http"
 )
 
 func main() {
-	mux := router.SetupRouter() // get the router
-	log.Println("Server running on http://localhost:9090")
-	err := http.ListenAndServe(":9090", mux) // start HTTP server
-	if err != nil {
-		log.Fatal(err)
+	mainMux := http.NewServeMux()
+
+	// Root (non-API) routes
+	mainMux.Handle("/", router.SetupRouter())
+
+	// API routes mounted under /api
+	mainMux.Handle("/api/", http.StripPrefix("/api", router.APIRouter()))
+
+	fmt.Println("Server started at :9090")
+	if err := http.ListenAndServe(":9090", mainMux); err != nil {
+		fmt.Println("Error starting server:", err)
 	}
 }
-
-//pexels - PiFlGwhKIh4z30H33wXUcXSUbYJKqml3Em2jrOYGLPF6LWts51VgzVVv

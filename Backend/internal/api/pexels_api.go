@@ -19,7 +19,7 @@ func GetPexelsResponse(user_request string) (string, error) {
 	// Example: search photos
 	ctx := context.Background()
 	params := &pexels.PhotoParams{
-		Query:   "nature",
+		Query:   user_request,
 		Page:    1,
 		PerPage: 1,
 	}
