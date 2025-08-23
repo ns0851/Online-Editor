@@ -6,22 +6,23 @@ import (
 	"log"
 )
 
-func GetGeminiResponseService(user_prompt string) (string, error) {
-	response, err := api.GetGeminiResponse(user_prompt)
+func FullProcessService(user_prompt string) ([]string, error) {
+	res, err := api.GetGeminiResponse(user_prompt)
 	if err != nil {
 		log.Fatal("Error getting response from Gemini: ", err)
 	}
 
+	fmt.Println("in service", len(res));
+
 	fmt.Println("got /gemini request")
-	return response, nil
-}
 
-func GetPexelsResponseService(gemini_prompt string) (string, error) {
-	response, err := api.GetPexelsResponse(gemini_prompt)
-	if err != nil {
-		log.Fatal("Error getting response from Pexels: ", err)
-	}
 
-	fmt.Println("got /pexels request")
-	return response, nil
+	
+	resp, err := api.GetPexelsResponse(res)
+		if err != nil {
+			log.Fatal("Error getting response from Pexels: ", err)
+		}
+
+		fmt.Println("got /pexels request")
+		return resp, nil
 }

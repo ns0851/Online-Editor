@@ -8,13 +8,15 @@ import (
 	"github.com/kosa3/pexels-go"
 )
 
-func GetPexelsResponse(user_request string) (string, error) {
+func GetPexelsResponse(user_request []string) ([]string, error) {
 	apiKey := os.Getenv("PEXELS_API_KEY") // safer than hardcoding
 	if apiKey == "" {
 		log.Fatal("Set PEXELS_API_KEY environment variable")
 	}
 
 	client := pexels.NewClient(apiKey)
+
+	for prompts 
 
 	// Example: search photos
 	ctx := context.Background()

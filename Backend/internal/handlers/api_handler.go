@@ -26,20 +26,12 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Getting response from Gemini //
-	respo, err := services.GetGeminiResponseService(data.Text)
+	// Calling services //
+	response, err := services.FullProcessService(data.Text)
 	if err != nil {
-		http.Error(w, "Error getting response from Gemini: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Error processing request", http.StatusInternalServerError)
 		return
 	}
-	io.WriteString(w, respo)
 
-	// Getting response from Pexels by passing response from Gemini to it //
-	res, err := services.GetPexelsResponseService(respo)
-	if err != nil {
-		http.Error(w, "Error getting response from Pexels: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-	// io.WriteString(w, res)
-	// fmt.Fprintf(w, `<h1 >Image</h1><img style="width:35vw; height:70vh;" src="%s" alt="photo">`, response)
+	io.WriteString(w, response)
 }
