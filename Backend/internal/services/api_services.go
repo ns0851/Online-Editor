@@ -12,17 +12,16 @@ func FullProcessService(user_prompt string) ([]string, error) {
 		log.Fatal("Error getting response from Gemini: ", err)
 	}
 
-	fmt.Println("in service", len(res));
+	fmt.Println("in service", len(res))
 
 	fmt.Println("got /gemini request")
 
-
-	
 	resp, err := api.GetPexelsResponse(res)
-		if err != nil {
-			log.Fatal("Error getting response from Pexels: ", err)
-		}
+	if err != nil {
+		return nil, err
+	}
 
-		fmt.Println("got /pexels request")
-		return resp, nil
+	fmt.Println("got the thingggg", resp)
+	fmt.Println("got /pexels request")
+	return resp, nil
 }

@@ -33,5 +33,6 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	io.WriteString(w, response)
+	w.Header().Set("Content-Type", "application/json")
+json.NewEncoder(w).Encode(response)
 }
