@@ -15,8 +15,8 @@ func main() {
 	// API routes mounted under /api
 	mainMux.Handle("/api/", http.StripPrefix("/api", router.APIRouter()))
 
-	fmt.Println("Server started at :9090")
-	if err := http.ListenAndServe(":9090", mainMux); err != nil {
+	fmt.Println("Server started at :9191")
+	if err := http.ListenAndServe(":9191", mainMux); err != nil {
 		fmt.Println("Error starting server:", err)
 	}
 }
