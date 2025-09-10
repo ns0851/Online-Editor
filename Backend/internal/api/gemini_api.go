@@ -26,7 +26,7 @@ func GetGeminiResponse(user_prompt string) ([]SceneQuery, error) {
 		return nil, err
 	}
 
-	before_prompt := "Analyze this script and return a JSON array of objects. Each object should represent a scene and contain two keys: - 'query': a concise search query (3-5 keywords) for a stock site like Pexels, keywords should make sure some consistency remains not just describe the exact mood. - 'type': either 'image' or 'video', depending on whether the scene would be best represented with a still image or a video which can be available in website like pexels. Make sure that characters stay consistent (e.g., if a white boy appears, he stays white throughout). Do not include any explanations, text, or formatting other than the JSON array. DO NOT INCLUDE ANY BACKTICKS (`) OR EXTRA TEXT. ONLY RETURN THE JSON ARRAY."
+	before_prompt := "Analyze this script and return a JSON array of objects. Return as loads of scenes as required... the edit should be fast paced with variety of visuals or atleast have variations so the video remains fresh for edit. Each object should represent a scene and contain two keys: - 'query': a concise search query (3-5 keywords) for a stock site like Pexels, keywords should make sure some consistency remains not just describe the exact mood. - 'type': either 'image' or 'video', depending on whether the scene would be best represented with a still image or a video which can be available in website like pexels. Make sure that characters stay consistent (e.g., if a white boy appears, he stays white throughout). Do not include any explanations, text, or formatting other than the JSON array. DO NOT INCLUDE ANY BACKTICKS (`) OR EXTRA TEXT. ONLY RETURN THE JSON ARRAY."
 
 	result, err := client.Models.GenerateContent(
 		ctx,
