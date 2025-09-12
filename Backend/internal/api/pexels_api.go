@@ -54,42 +54,33 @@ type PexelsPhotoSearchResponse struct {
 }
 
 func searchPhoto(ctx context.Context, apiKey string, query string) (string, error) {
-    // 1. Create a new, clean HTTP client
     client := &http.Client{}
 
-    // 2. Create the request URL, ensuring the query is properly escaped
     baseURL := "https://api.pexels.com/v1/search"
     reqURL := fmt.Sprintf("%s?query=%s&per_page=1", baseURL, url.QueryEscape(query))
 
-    // 3. Create the request object
     req, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
     if err != nil {
         return "", fmt.Errorf("failed to create request: %w", err)
     }
 
-    // 4. Set the EXACT same Authorization header that worked in PowerShell
     req.Header.Set("Authorization", apiKey)
 
-    // 5. Execute the request
-    fmt.Printf("--> Making direct HTTP request to: %s\n", reqURL)
     resp, err := client.Do(req)
     if err != nil {
         return "", fmt.Errorf("request execution failed: %w", err)
     }
     defer resp.Body.Close()
 
-    // Check for non-200 status codes first
     if resp.StatusCode != http.StatusOK {
         return "", fmt.Errorf("pexels API returned non-200 status: %s", resp.Status)
     }
 
-    // 6. Decode the JSON response
     var pexelsResponse PexelsPhotoSearchResponse
     if err := json.NewDecoder(resp.Body).Decode(&pexelsResponse); err != nil {
         return "", fmt.Errorf("failed to decode json response: %w", err)
     }
 
-    // 7. Safely extract the URL
     if len(pexelsResponse.Photos) == 0 {
         return "", fmt.Errorf("no photo found for query: '%s'", query)
     }
